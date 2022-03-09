@@ -36,9 +36,9 @@ class KyonggiDownloadBatchTest {
         JSONArray row = (JSONArray) jsonRow.get("row");
         JSONArray head = (JSONArray) jsonHead.get("head");
 
-//        for(Object obj : row) {
-//
-//        }
+        for(int i=0; i <= row.length(); i++) {
+
+        }
 
 
 
