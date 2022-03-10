@@ -28,7 +28,10 @@
       <div class="collapse navbar-collapse" id="collapsibleNavbar">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" href="/">홈</a>
+            <a class="nav-link" href="/">PCR 병원 조회</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/list">경기지역화폐 사용처 조회</a>
           </li>
         </ul>
       </div>
@@ -36,7 +39,7 @@
   </nav>
 
   <div class="container">
-    <br />
+    <br/>
     <h3>경기지역화폐 조회 서비스</h3>
 
       <div class="row">
@@ -54,7 +57,7 @@
         </div>
       </div>
       <button type="button" class="btn btn-primary" id="btn-submit">찾기</button>
-    <hr />
+    <hr/>
 
     <table class="table">
       <span id="amount"></span>
@@ -120,7 +123,7 @@
 
         tdEL1.innerHTML = e.cmpnmNm;
         tdEL2.innerHTML = e.indutypeNm;
-        tdEL3.innerHTML = e.refineLotnoAddr;
+        tdEL3.innerHTML = e.refineLotnoAddr === 'null' ? '' : e.refineLotnoAddr;
 
         trEL.append(tdEL1);
         trEL.append(tdEL2);
@@ -131,7 +134,7 @@
 
       let pageNumber = responsePasing.pageable.pageNumber+1;
       let pageSize = responsePasing.pageable.pageSize;
-      let totalPages = responsePasing.totalPages
+      let totalPages = responsePasing.totalPages;
       let startPage = Math.floor(pageNumber/pageSize) * pageSize +1;
       let tempEndPage = startPage + pageSize -1;
       let endPage = tempEndPage > totalPages ? totalPages : tempEndPage;
@@ -143,8 +146,8 @@
         pagenation.append(li1);
       }
       for(let i= startPage; i<=endPage; i++) {
-          var li2 = `<li class="page-item"><a class="page-link" href="javascript:void(0);" onclick="getKyonggi('${sigunNm}', '${cmpnmNm}', '${i-1}');">${i}</a></li>`;
-          pagenation.append(li2);
+        var li2 = `<li class="page-item"><a class="page-link" href="javascript:void(0);" onclick="getKyonggi('${sigunNm}', '${cmpnmNm}', '${i-1}');">${i}</a></li>`;
+        pagenation.append(li2);
       }
 
     }

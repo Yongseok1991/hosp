@@ -40,8 +40,6 @@ public class KyonggiDownloadBatch {
             JSONObject jsonHead = (JSONObject) jsonFamliy.get(0);
             JSONObject jsonRow = (JSONObject) jsonFamliy.get(1);
             JSONArray row = (JSONArray) jsonRow.get("row");
-            JSONArray head = (JSONArray) jsonHead.get("head");
-
 
             for (int i = 0; i < row.length(); i++) {
                 JSONObject jsonObj = (JSONObject) row.get(i);
