@@ -19,9 +19,10 @@ import java.util.List;
 public class KyonggiDownloadBatch {
 
     private final KyonggiRepository kyonggiRepository;
-    @Scheduled(cron = "0 11 * * * *", zone = "Asia/Seoul")
+//    @Scheduled(cron = "0 1 * * * *", zone = "Asia/Seoul")
     public void downloadBatch() throws JSONException {
         log.info("<<TEST>>");
+        kyonggiRepository.deleteAll();
         List<Kyonggi> kyonggis = new ArrayList<>();
         RestTemplate rt = new RestTemplate();
         int count = 1;
@@ -32,16 +33,16 @@ public class KyonggiDownloadBatch {
 
             String result = rt.getForObject(url, String.class);
             JSONObject jsonObject = new JSONObject(result);
-
+            if (jsonObject.isNull("RegionMnyFacltStus")) {
+                break;
+            }
             JSONArray jsonFamliy = (JSONArray) jsonObject.get("RegionMnyFacltStus");
             JSONObject jsonHead = (JSONObject) jsonFamliy.get(0);
             JSONObject jsonRow = (JSONObject) jsonFamliy.get(1);
             JSONArray row = (JSONArray) jsonRow.get("row");
             JSONArray head = (JSONArray) jsonHead.get("head");
 
-            if (head.isNull(0) || head == null) {
-                break;
-            }
+
             for (int i = 0; i < row.length(); i++) {
                 JSONObject jsonObj = (JSONObject) row.get(i);
 
