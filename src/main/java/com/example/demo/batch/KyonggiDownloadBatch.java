@@ -1,35 +1,34 @@
 package com.example.demo.batch;
 
-
 import com.example.demo.domain.Kyonggi;
+import com.example.demo.domain.KyonggiRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import org.junit.jupiter.api.Test;
+import org.springframework.boot.configurationprocessor.json.JSONArray;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+@RequiredArgsConstructor
+@Component
 @Slf4j
-class KyonggiDownloadBatchTest {
-    @Test
-    public void test() throws IOException, JSONException {
+public class KyonggiDownloadBatch {
+
+    private final KyonggiRepository kyonggiRepository;
+    @Scheduled(cron = "0 11 * * * *", zone = "Asia/Seoul")
+    public void downloadBatch() throws JSONException {
         log.info("<<TEST>>");
         List<Kyonggi> kyonggis = new ArrayList<>();
         RestTemplate rt = new RestTemplate();
         int count = 1;
 
-        while(true) {
+        while (true) {
 
-            String url = "https://openapi.gg.go.kr/RegionMnyFacltStus?Key=3455e79d3c3d4fbd8c73a06f414703b9&pIndex="+count+"&Type=json&pSize=1000";
+            String url = "https://openapi.gg.go.kr/RegionMnyFacltStus?Key=3455e79d3c3d4fbd8c73a06f414703b9&pIndex=" + count + "&Type=json&pSize=1000";
 
             String result = rt.getForObject(url, String.class);
             JSONObject jsonObject = new JSONObject(result);
@@ -40,10 +39,9 @@ class KyonggiDownloadBatchTest {
             JSONArray row = (JSONArray) jsonRow.get("row");
             JSONArray head = (JSONArray) jsonHead.get("head");
 
-            if(head == null) {
+            if (head.isNull(0) || head == null) {
                 break;
             }
-
             for (int i = 0; i < row.length(); i++) {
                 JSONObject jsonObj = (JSONObject) row.get(i);
 
@@ -56,11 +54,12 @@ class KyonggiDownloadBatchTest {
                         .refineRoadNmAddr(jsonObj.get("REFINE_ROADNM_ADDR").toString())
                         .liveYn(jsonObj.get("LIVE_YN").toString())
                         .build();
-
                 kyonggis.add(kyonggi);
-
             }
-
+            kyonggiRepository.saveAll(kyonggis);
+            kyonggis.clear();
+            count++;
+            System.out.println("count: " + count);
         }
     }
 }
