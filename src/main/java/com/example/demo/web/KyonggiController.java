@@ -1,6 +1,6 @@
 package com.example.demo.web;
 
-import com.example.demo.domain.Hospital;
+
 import com.example.demo.domain.Kyonggi;
 import com.example.demo.domain.KyonggiRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
