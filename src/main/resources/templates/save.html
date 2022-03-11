@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>PCR 검사 병원 조회</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+  <title>간단한 지도 표시하기</title>
+  <script
+          src="https://code.jquery.com/jquery-3.6.0.min.js"
+          integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+          crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">Yongdol</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/">PCR 병원 조회</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/list">경기지역화폐 사용처 조회</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/qna">Q&A 게시판</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h2>Q&A</h2>
+    <p>사이트 이용 불편사항이나 질문사항을 올려주세요</p>
+    <form>
+      <div class="form-group">
+        <label for="title" class="form-label">Title:</label>
+        <input type="text" class="form-control" placeholder="Enter Title" id="title" required>
+      </div>
+
+      <div class="form-group">
+        <label for="writer" class="form-label">Writer:</label>
+        <input type="text" class="form-control" placeholder="Enter Title" id="writer" required>
+      </div>
+
+      <div class="form-group">
+        <label for="content">content:</label>
+        <textarea class="form-control summernote" rows="5" id="content" required></textarea>
+      </div>
+    </form>
+    <button id="btn-save" class="btn btn-primary">등록</button>
+  </div>
+  </form>
+  <div class="jumbotron text-center" style="margin-bottom: 0">
+    <p>Created By Yong</p>
+    <p>📞 010-5023-2463</p>
+    <p>🏴 경기도 고양시 일산서구</p>
+  </div>
+
+<script>
+  $(function() {
+
+    $('#btn-save').on('click', () => {
+      let title = $('#title').val();
+      let writer = $('#writer').val();
+      let content= $('#content').val();
+      if(title == '') {
+        alert('제목을 입력하세요')
+        return false;
+      }
+      if(writer == '') {
+        alert('작성자를 입력하세요')
+        return false;
+      }
+      if(content == '') {
+        alert('내용을 입력하세요')
+        return false;
+      }
+
+      let data = {
+        title: title,
+        writer: writer,
+        content: content
+      };
+      fetch('/qnaApi', {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      })
+      .then(function(res) {
+        res.json()
+        alert('글쓰기가 완료되었습니다.')
+        location.href="/qna"
+      })
+      .catch(err => alert('알 수 없는 오류가 발생하였습니다.'))
+    })
+
+    $('.summernote').summernote({
+      height: 300,                 // 에디터 높이
+      minHeight: null,             // 최소 높이
+      maxHeight: null,             // 최대 높이
+      focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
+      callbacks: {	//여기 부분이 이미지를 첨부하는 부분
+        onImageUpload: function(files) {
+          console.log('invoked1')
+          for (let i = 0; i < files.length; i++) {
+            uploadSummernoteImageFile(files[i], this);
+          }
+        },
+        onPaste: function(e) {
+          var clipboardData = e.originalEvent.clipboardData;
+          if (clipboardData && clipboardData.items && clipboardData.items.length) {
+            for (let i = 0; i < clipboardData.items.length; i++) {
+              let item = clipboardData.items[i];
+            }
+            if (item.kind === 'file' && item.type.indexOf('image/') !== -1) {
+              e.preventDefault();
+            }
+          }
+        }
+      }
+    });
+
+  })
+
+  function uploadSummernoteImageFile(file, editor) {
+    data = new FormData();
+    data.append("file", file);
+    $.ajax({
+      data : data,
+      type : "POST",
+      url : "/uploadSummernoteImageFile",
+      contentType : false,
+      processData : false,
+      success : function(data) {
+        //항상 업로드된 파일의 url이 있어야 한다.
+        $(editor).summernote('insertImage', data.url);
+      }
+    });
+  }
+
+
+  /**
+   * 이미지 파일 업로드
+   */
+
+</script>
+</body>
+
+</html>
