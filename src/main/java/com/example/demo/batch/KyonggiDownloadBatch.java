@@ -19,7 +19,7 @@ import java.util.List;
 public class KyonggiDownloadBatch {
 
     private final KyonggiRepository kyonggiRepository;
-//    @Scheduled(cron = "0 1 * * * *", zone = "Asia/Seoul")
+//    @Scheduled(cron = "0 51 * * * *", zone = "Asia/Seoul")
     public void downloadBatch() throws JSONException {
         log.info("<<TEST>>");
         kyonggiRepository.deleteAll();

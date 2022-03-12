@@ -97,7 +97,9 @@
           tdEL1.innerHTML = e.id;
           tdEL2.innerHTML = e.title;
           tdEL3.innerHTML = e.writer == null ? '용돌' : e.writer;
-
+          tdEL2.onclick = function(){
+            location.href="/qna/"+e.id;
+          }
           trEL.append(tdEL1);
           trEL.append(tdEL2);
           trEL.append(tdEL3);

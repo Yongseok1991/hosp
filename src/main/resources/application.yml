@@ -19,13 +19,11 @@ spring:
   jpa:
     open-in-view: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true
-  mvc:
-    converters:
-      preferred-json-mapper: gson
+
   servlet:
     multipart:
       max-file-size: 10MB

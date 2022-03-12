@@ -49,6 +49,12 @@ public class QnaController {
         qnaService.qnaWrite(qna);
     }
 
+    @GetMapping("/qna/{id}")
+    public String detail(Model model, @PathVariable Integer id) {
+        model.addAttribute("board", qnaService.boardDetail(id));
+        return "detail";
+    }
+
     @ResponseBody
     @PostMapping(value = "/uploadSummernoteImageFile", produces = "application/json")
     public Map<String, Object> uploadSummernoteImageFile(@RequestParam("file") MultipartFile multipartFile) {
