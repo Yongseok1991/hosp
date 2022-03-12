@@ -42,7 +42,7 @@
   </nav>
 
   <div class="container mt-3">
-    <h2>Q&A 게시판</h2>
+    <h3><strong>Q&A 게시판</strong></h3>
     <p>사이트 이용 불편사항이나 질문사항을 올려주세요</p>
     <table class="table table-bordered">
       <thead>
@@ -100,6 +100,7 @@
           tdEL2.onclick = function(){
             location.href="/qna/"+e.id;
           }
+          tdEL2.style.cursor= "pointer"
           trEL.append(tdEL1);
           trEL.append(tdEL2);
           trEL.append(tdEL3);
