@@ -1,11 +1,13 @@
 package com.example.demo.web;
 
 import com.example.demo.domain.Qna;
+import com.example.demo.domain.ReplyDTO;
 import com.example.demo.service.QnaService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,7 +35,7 @@ public class QnaController {
 
     @ResponseBody
     @GetMapping("/api/qna")
-    public Page<Qna> selectList(@PageableDefault(size=10) Pageable pageable) {
+    public Page<Qna> selectList(@PageableDefault(size=10, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<Qna> list = qnaService.QnaList(pageable);
        return list;
     }
@@ -82,6 +84,12 @@ public class QnaController {
             e.printStackTrace();
         }
         return params;
+    }
+
+    @ResponseBody
+    @PostMapping("/api/qna/{qnaId}/reply")
+    public void ReplySave(@RequestBody ReplyDTO replyDTO) {
+        qnaService.replyWrite(replyDTO);
     }
 
 

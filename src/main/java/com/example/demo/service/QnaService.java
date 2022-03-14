@@ -1,10 +1,10 @@
 package com.example.demo.service;
 
-import com.example.demo.domain.Qna;
-import com.example.demo.domain.QnaRepository;
+import com.example.demo.domain.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,7 +15,7 @@ import java.util.Optional;
 public class QnaService {
 
     private final QnaRepository qnaRepository;
-
+    private final ReplyRepository replyRepository;
     @Transactional(readOnly = true)
     public Page<Qna> QnaList(Pageable pageable) {
         return qnaRepository.findAll(pageable);
@@ -42,6 +42,10 @@ public class QnaService {
         qna.setContent(requestQna.getContent());
     }
 
+    @Transactional
+    public void replyWrite(ReplyDTO replyDTO) {
+        replyRepository.mSave(replyDTO.getQnaId(), replyDTO.getContent());
+    }
 
 
 
