@@ -54,7 +54,7 @@
       </div>
       <br> <br>
       <div>
-        글번호 <span id="id"><i th:text="${board.id}"></i></span> 작성자 <span><i th:text="${board.writer}"> </i></span> 조회수 <span><i th:text="${board.count}"> </i></span> </span>작성시간 <span><span th:text="${#temporals.format(board.createDate, 'yyyy-MM-dd HH:mm')}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        글번호 <span id="id"><i th:text="${board.id}"></i></span> 작성자 <span><i th:text="${board.writer}"> </i></span> 조회수 <span><i th:text="${board.count}"> </i></span> </span>작성시간 <span th:text="${#temporals.format(board.createDate, 'yyyy-MM-dd HH:mm')}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
       </div>
       <div>
         <h3 th:text="${board.title}"></h3>
