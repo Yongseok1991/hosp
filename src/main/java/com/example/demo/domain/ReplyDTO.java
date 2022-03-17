@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class ReplyDTO {
     private int qnaId;
     private String content;
+    private int replyId;
 }

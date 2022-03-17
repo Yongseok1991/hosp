@@ -92,5 +92,16 @@ public class QnaController {
         qnaService.replyWrite(replyDTO);
     }
 
+    @ResponseBody
+    @PostMapping("/api/qna/{qnaId}/reply/{replyId}")
+    public void ReplyUpdate(@RequestBody ReplyDTO replyDTO) {
+        qnaService.replyUpdate(replyDTO);
+    }
+
+    @DeleteMapping("/qna")
+    public void delete(Integer id) {
+        qnaService.qnaDelete(id);
+    }
+
 
 }

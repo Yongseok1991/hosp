@@ -12,4 +12,8 @@ public interface ReplyRepository extends JpaRepository<Reply, Integer> {
     @Query(value = "INSERT INTO reply(qnaId, content, createDate) VALUES(?1, ?2, now())", nativeQuery = true)
     public int mSave(int qnaId, String content);
 
+    @Query(value="UPDATE reply SET content = ?1 , updateDate = now() where id = ?2", nativeQuery = true)
+    @Modifying
+    public int mUpdate(String content, int replyId);
+
 }

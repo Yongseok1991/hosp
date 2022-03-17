@@ -35,6 +35,7 @@ public class QnaService {
 
     @Transactional
     public void qnaDelete(Integer id) {
+        replyRepository.deleteAll();
         qnaRepository.deleteById(id);
     }
 
@@ -48,6 +49,12 @@ public class QnaService {
     @Transactional
     public void replyWrite(ReplyDTO replyDTO) {
         replyRepository.mSave(replyDTO.getQnaId(), replyDTO.getContent());
+    }
+
+
+    @Transactional
+    public void replyUpdate(ReplyDTO replyDTO) {
+        replyRepository.mUpdate(replyDTO.getContent(), replyDTO.getReplyId());
     }
 
 
