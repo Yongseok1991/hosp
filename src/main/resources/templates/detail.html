@@ -64,12 +64,70 @@
         <div th:utext="${board.content}"></div>
       </div>
       <hr />
+      <div class="card">
+        <form>
+          <input type="hidden" id="qnaId" th:value="${board.id}" />
+          <div>
+            <div class="card-body">
+              <textarea id="reply-content" class="form-control" rows="1" cols=""></textarea>
+            </div>
+            <div class="card-footer">
+              <button type="button" id="btn-reply-save" class="btn btn-primary">등록</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="card">
+        <div class="card-header">댓글리스트</div>
+        <ul id="reply-box" class="list-group">
+          <th:block th:each="reply: ${board.reply}">
+            <li id="reply-${reply.id}" class="list-group-item d-flex justify-content-between">
+              <div th:text="${reply.content}"></div>
+              <div class="d-flex">
+                <div class="font-italic" th:text="|작성자 : ${reply.qna.writer}|"> &nbsp;</div>
+                  <button onClick="" class="badge" style="color: black;">수정</button>
+                  <button onClick="" class="badge" style="color: black;">삭제</button>
+
+                <div><h6 style="padding-top: 5px;" th:text="${reply.createDate}"></h6></div>
+              </div>
+            </li>
+          </th:block>
+        </ul>
+      </div>
+    </div>
+  </div>
+
   <div class="jumbotron text-center" style="margin-bottom: 0">
     <p>Created By Yong</p>
     <p>📞 010-5023-2463</p>
     <p>🏴 경기도 고양시 일산서구</p>
   </div>
+      <script>
+        $(function () {
 
+
+          $("#btn-reply-save").on("click", () => {
+            if ($("#reply-content").val() == "") {
+              alert('내용을 입력하세요');
+              return false;
+            }
+            let data = {
+              qnaId: $("#qnaId").val(),
+              content: $("#reply-content").val()
+          };
+          fetch(`/api/qna/${data.qnaId}/reply`, {
+            body: JSON.stringify(data),
+            headers:{"Content-Type": "application/json"},
+            method: "POST"
+          })
+          .then((res) => {
+            alert("댓글작성이 완료되었습니다.");
+            location.href = `/qna/${data.qnaId}`;
+          })
+
+          })
+        })
+      </script>
 </body>
 
 </html>

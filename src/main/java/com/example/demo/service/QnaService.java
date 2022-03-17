@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.domain.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -12,6 +13,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class QnaService {
 
     private final QnaRepository qnaRepository;
@@ -27,6 +29,7 @@ public class QnaService {
     }
     @Transactional(readOnly = false)
     public Qna boardDetail(Integer id) {
+
         return qnaRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("글 상세보기 실패"));
     }
 
@@ -46,9 +49,6 @@ public class QnaService {
     public void replyWrite(ReplyDTO replyDTO) {
         replyRepository.mSave(replyDTO.getQnaId(), replyDTO.getContent());
     }
-
-
-
 
 
 
