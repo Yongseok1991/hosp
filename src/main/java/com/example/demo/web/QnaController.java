@@ -4,6 +4,7 @@ import com.example.demo.domain.Qna;
 import com.example.demo.domain.ReplyDTO;
 import com.example.demo.service.QnaService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +24,7 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @Controller
+@Slf4j
 public class QnaController {
 
 
@@ -98,10 +100,32 @@ public class QnaController {
         qnaService.replyUpdate(replyDTO);
     }
 
-    @DeleteMapping("/qna")
-    public void delete(Integer id) {
-        qnaService.qnaDelete(id);
+    @ResponseBody
+    @DeleteMapping("/qna/{qnaId}")
+    public void delete(@PathVariable Integer qnaId) {
+        qnaService.qnaDelete(qnaId);
     }
+
+    @ResponseBody
+    @PutMapping("/api/qna/up")
+    public void updateQna(@RequestBody Qna qna) {
+        qnaService.qnaUpdate(qna);
+    }
+
+    @GetMapping("/qna/update/{id}")
+    public String updateQnaForm(@PathVariable Integer id, Model model) {
+        model.addAttribute("board", qnaService.boardDetail(id));
+        return "/update";
+    }
+
+
+    @ResponseBody
+    @DeleteMapping("/reply/{replyId}")
+    public void deleteReply(@PathVariable Integer replyId) {
+        log.info("\t+ deleteReply invoked");
+        qnaService.replyDelete(replyId);
+    }
+
 
 
 }

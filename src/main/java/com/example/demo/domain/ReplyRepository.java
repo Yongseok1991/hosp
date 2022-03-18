@@ -16,4 +16,8 @@ public interface ReplyRepository extends JpaRepository<Reply, Integer> {
     @Modifying
     public int mUpdate(String content, int replyId);
 
+    @Query(value="DELETE FROM reply WHERE qnaid = ?1", nativeQuery = true)
+    @Modifying
+    public int mDeleteReplyByQna(int qnaId);
+
 }

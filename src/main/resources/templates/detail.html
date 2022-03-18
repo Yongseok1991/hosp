@@ -49,7 +49,7 @@
     <div class="container" style="margin-top: 3rem;">
       <div class="btn-group">
         <button class="btn btn-secondary" style="font-size: 1.0rem;" onclick="history.back()">돌아가기</button>
-          <a href="#" style="font-size: 1.0rem;" class="btn btn-warning">수정</a>
+          <a th:href="|/qna/update/${board.id}|" style="font-size: 1.0rem;" class="btn btn-warning">수정</a>
           <button id="btn-delete" style="font-size: 1.0rem;" class="btn btn-danger">삭제</button>
       </div>
       <br> <br>
@@ -84,7 +84,7 @@
               <div class="d-flex">
                 <div class="font-italic" th:text="|작성자 : ${reply.qna.writer}|"> &nbsp;</div>
                   <button th:onclick="|updateViewBtn(${reply.id})|" id="btn-reply-update" class="badge" style="color: black;">수정</button>
-                  <button onClick="" class="badge" style="color: black;">삭제</button>
+                  <button th:onclick="|btnReplyDelete(${reply.id})|" class="badge" style="color: black;">삭제</button>
                 <div><h6 style="padding-top: 5px; padding-left: 10px;" th:text="${#temporals.format(reply.createDate, 'yyyy-MM-dd HH:mm')}"></h6></div>
               </div>
             </li>
@@ -126,6 +126,20 @@
           .catch((err) => alert(err))
           })
 
+          $('#btn-delete').on('click', () => {
+              let qnaId = $('#qnaId').val();
+
+              fetch(`/qna/${qnaId}`, {
+                method: "DELETE"
+              })
+              .then((res) => {
+                if(res.ok) {
+                  alert('게시글이 삭제되었습니다.');
+                  location.href="/qna"
+                }
+              })
+              .catch(err => alert(err));
+          })
 
           $(document).on("click", '#btn-reply-success', (e) =>{
                // e.stopPropagation()
@@ -156,7 +170,21 @@
                .catch((err) => alert(err))
           })
 
+
         })
+
+       async function btnReplyDelete(replyId) {
+           let response =  await fetch(`/reply/${replyId}`, {
+               method: 'DELETE',
+             })
+             if(response.ok) {
+               alert('정상적으로 삭제되었습니다.')
+               location.href="/qna/"+$('#qnaId').val()
+             } else {
+               new Error('잘못한듯요')
+             }
+        }
+
 
         function updateViewBtn(replyId) {
           var htmls =

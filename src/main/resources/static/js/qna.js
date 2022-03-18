@@ -25,7 +25,7 @@ let setQna = (responsePasing) => {
         tdEL1.innerHTML = e.id;
         tdEL2.innerHTML = e.title;
         tdEL3.innerHTML = e.writer == null ? '용돌' : e.writer;
-        tdEL4 = e.createDate.substring(0, 16).replace('T', ' ')
+        tdEL4.innerHTML = e.createDate.substring(0, 16).replace('T', ' ')
         tdEL2.onclick = () => location.href=`/qna/${e.id}`;
 
         tdEL2.style.cursor= "pointer"
