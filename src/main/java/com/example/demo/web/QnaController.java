@@ -41,7 +41,6 @@ public class QnaController {
         Page<Qna> list = qnaService.QnaList(pageable);
        return list;
     }
-
     @GetMapping("/save")
     public String save(Qna qna) {
         return "save";
@@ -74,12 +73,10 @@ public class QnaController {
         File targetFile = new File(fileRoot + savedFileName);
 
         try {
-
             InputStream fileStream = multipartFile.getInputStream();
             FileUtils.copyInputStreamToFile(fileStream, targetFile); // 파일 저장
             params.put("url", "/summernoteImage/" + savedFileName);
             params.put("responseCode", "success");
-
         } catch (IOException e) {
             FileUtils.deleteQuietly(targetFile); // 저장된 파일 삭제
             params.put("responseCode", "error");
