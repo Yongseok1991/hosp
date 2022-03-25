@@ -14,5 +14,4 @@ public interface QnaRepository extends JpaRepository<Qna, Integer> {
 
 
 
-
 }

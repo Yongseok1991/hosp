@@ -66,14 +66,15 @@
       <hr />
       <div class="card">
           <input type="hidden" id="qnaId" th:value="${board.id}" />
-          <div>
-            <div class="card-body">
-              <textarea id="reply-content" class="form-control" rows="1" cols=""></textarea>
-            </div>
-            <div class="card-footer">
-              <button type="button" id="btn-reply-save" class="btn btn-primary">등록</button>
-            </div>
+          <div class="input-group mb-3">
+           <span class="input-group-text">내용</span>
+           <textarea id="reply-content" th:rows="8" class="form-control col" maxlength="2000"></textarea>
           </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text">작성자</span>
+            <input type="text" class="form-control col" placeholder="Enter Writer" id="rWriter" required>
+          <button type="button" id="btn-reply-save" class="btn btn-primary">등록</button>
+        </div>
       </div>
       <div class="card">
         <div class="card-header">댓글리스트</div>
@@ -82,7 +83,7 @@
             <li th:id="|reply-${reply.id}|" class="list-group-item d-flex justify-content-between">
               <div th:text="${reply.content}"></div>
               <div class="d-flex">
-                <div class="font-italic" th:text="|작성자 : ${reply.qna.writer}|"> &nbsp;</div>
+                <div class="font-italic"><h6 style="padding-top: 5px; padding-left: 10px; padding-right: 10px;"th:text="|작성자: ${reply.writer} |"></h6> </div>
                   <button th:onclick="|updateViewBtn(${reply.id})|" id="btn-reply-update" class="badge" style="color: black;">수정</button>
                   <button th:onclick="|btnReplyDelete(${reply.id})|" class="badge" style="color: black;">삭제</button>
                 <div><h6 style="padding-top: 5px; padding-left: 10px;" th:text="${#temporals.format(reply.createDate, 'yyyy-MM-dd HH:mm')}"></h6></div>
@@ -106,10 +107,16 @@
               alert('내용을 입력하세요');
               return false;
             }
+            if ($("#rWriter").val() == "") {
+              alert('작성자를 입력하세요');
+              return false;
+            }
             let data = {
               qnaId: $("#qnaId").val(),
-              content: $("#reply-content").val()
-            };
+              content: $("#reply-content").val(),
+              writer: $('#rWriter').val()
+            }
+            console.log(JSON.stringify(data));
           fetch(`/api/qna/${data.qnaId}/reply`, {
             body: JSON.stringify(data),
             headers:{"Content-Type": "application/json"},
@@ -157,7 +164,7 @@
                fetch(`/api/qna/${data.qnaId}/reply/${data.replyId}`, {
                  body: JSON.stringify(data),
                  headers:{"Content-Type": "application/json"},
-                 method: "POST"
+                 method: "PUT"
                })
                .then((res) => {
                  if(res.ok) {
@@ -188,15 +195,16 @@
 
         function updateViewBtn(replyId) {
           var htmls =
-            `<form>
-               <div id='reply-${replyId} "class='list-group-item d-flex justify-content-between'>
-                 <input type='hidden' id='replyId' value="${replyId}">
-                 <div class="card-body">
-                    <textarea id="reply-editContent" class="form-control" rows="1" cols=""></textarea>
-                    <button type='button' id='btn-reply-success' class='badge' style='color: black'>완료</button>
-                 </div>
-               </div>
-            </form>`;
+            "<form>"+
+               "<div id='reply-"+replyId+"' class='list-group-item d-flex justify-content-between'>" +
+                 "<input type='hidden' id='replyId' value='"+replyId+"'>"+
+                 "<div class='card-body'>"+
+                    "<textarea id='reply-editContent' class='form-control' rows='1' cols=''></textarea>"+
+                    "<button type='button' id='btn-reply-success' class='badge' style='color: black'>완료</button>"+
+                 "</div>"+
+               "</div>"+
+            "</form>";
+
           $("#reply-" +replyId).replaceWith(htmls);
         }
 

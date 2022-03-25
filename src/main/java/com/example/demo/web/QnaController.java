@@ -88,11 +88,12 @@ public class QnaController {
     @ResponseBody
     @PostMapping("/api/qna/{qnaId}/reply")
     public void ReplySave(@RequestBody ReplyDTO replyDTO) {
+        log.info("\t+ replyDTO: " +  replyDTO);
         qnaService.replyWrite(replyDTO);
     }
 
     @ResponseBody
-    @PostMapping("/api/qna/{qnaId}/reply/{replyId}")
+    @PutMapping("/api/qna/{qnaId}/reply/{replyId}")
     public void ReplyUpdate(@RequestBody ReplyDTO replyDTO) {
         qnaService.replyUpdate(replyDTO);
     }

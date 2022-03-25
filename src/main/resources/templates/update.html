@@ -55,7 +55,7 @@
 
     <div class="form-group">
       <label for="writer" class="form-label">Writer:</label>
-      <input type="text" class="form-control" placeholder="Enter Title" th:value="${board.writer}"id="writer" readonly>
+      <input type="text" class="form-control" placeholder="Enter Title" th:value="${board.writer}" id="writer" readonly>
     </div>
 
     <div class="form-group">
@@ -114,20 +114,22 @@
       focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
       callbacks: {	//여기 부분이 이미지를 첨부하는 부분
         onImageUpload: function(files) {
-          console.log('invoked1')
-          for (let i = 0; i < files.length; i++) {
-            uploadSummernoteImageFile(files[i], this);
-          }
+          const _this = this;
+          console.log('onImageUpload invoked.')
+          Array.from(files).forEach( x => uploadSummernoteImageFile(x, _this));
         },
         onPaste: function(e) {
-          var clipboardData = e.originalEvent.clipboardData;
+          let clipboardData = e.originalEvent.clipboardData;
           if (clipboardData && clipboardData.items && clipboardData.items.length) {
-            for (let i = 0; i < clipboardData.items.length; i++) {
-              let item = clipboardData.items[i];
-            }
-            if (item.kind === 'file' && item.type.indexOf('image/') !== -1) {
-              e.preventDefault();
-            }
+            console.log("onPaste invoked.");
+            console.log("clip: " + clipboardData);
+            clipboardData.forEach( x => {
+              let item = clipboardData.x
+              if (item.kind === 'file' && item.type.indexOf('image/') !== -1) {
+                e.preventDefault();
+              }
+            });
+
           }
         }
       }
@@ -136,8 +138,9 @@
   })
 
   function uploadSummernoteImageFile(file, editor) {
-    data = new FormData();
+    let data = new FormData();
     data.append("file", file);
+
     $.ajax({
       data : data,
       type : "POST",
@@ -147,6 +150,9 @@
       success : function(data) {
         //항상 업로드된 파일의 url이 있어야 한다.
         $(editor).summernote('insertImage', data.url);
+        if(data.responseCode === 'error') {
+            alert('불러오기를 실패했습니다.');
+        }
       }
     });
   }

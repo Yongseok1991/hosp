@@ -23,8 +23,10 @@ public class Reply {
     @JoinColumn(name="qnaId")
     private Qna qna;
 
-    @Column(nullable = false, length = 200)
+    @Column(nullable = false, length = 2000)
     private String content;
+
+    private String writer;
 
     @CreationTimestamp
     private LocalDateTime createDate;
