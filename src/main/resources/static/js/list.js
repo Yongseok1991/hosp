@@ -8,6 +8,11 @@ window.addEventListener("keydown", (e) => {
 document.querySelector("#btn-submit").addEventListener("click", (e) => {
     let sigunNm = document.querySelector("#sigunNm").value;
     let cmpnmNm = document.querySelector("#cmpnmNm").value;
+    if(sigunNm == '' || sigunNm == 'undefined') {
+        alert("시군구를 입력해주세요");
+        return false;
+    }
+    
     if(cmpnmNm == '' || cmpnmNm == 'undefined') {
         alert("가게를 입력해주세요");
         return false;

@@ -53,8 +53,9 @@
     </div>
       <div class="row" style="margin-top: 10px;">
         <div class="col">
-          <span class="input-group-text">시군</span>
-          <select class="form-select" name="sigunNm" id="sigunNm">
+          <span class="input-group-text">시군구</span>
+          <select class="form-select" name="sigunNm" id="sigunNm" autofocus>
+            <option th:text="선택" value=""></option>
             <th:block th:each="sigun: ${sigunNms}">
               <option th:text="${sigun}" th:value="${sigun}"></option>
             </th:block>
