@@ -28,9 +28,9 @@ let setHospital = (responsePasing) => {
         let tdEL2 = document.createElement("td");
         let tdEL3 = document.createElement("td");
 
-        tdEL1.innerHTML = e.yadmNm;
-        tdEL2.innerHTML = e.pcrPsblYn;
-        tdEL3.innerHTML = e.addr;
+        tdEL1.innerText = e.yadmNm;
+        tdEL2.innerText = e.pcrPsblYn;
+        tdEL3.innerText = e.addr;
 
         //console.log(tdEL1);
         //console.log(tdEL2);
@@ -50,7 +50,7 @@ let setHospital = (responsePasing) => {
 let setSggucdnm = (responsePasing) => {
     let sgguCdNmDom = document.querySelector("#sgguCdNm");
     // 바보 innerHTML 쓰면 되는걸 (초기화 하기)
-    sgguCdNmDom.innerHTML = "";
+    sgguCdNmDom.innerText = "";
     //console.log(responsePasing);
 
     // 리턴이 필요없으니 forEach로
