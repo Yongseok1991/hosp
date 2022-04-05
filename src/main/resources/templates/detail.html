@@ -38,6 +38,9 @@
           <li class="nav-item">
             <a class="nav-link" href="/qna">Q&A 게시판</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/ex">키워드 조합</a>
+          </li>
         </ul>
       </div>
     </div>
@@ -176,8 +179,6 @@
                })
                .catch((err) => alert(err))
           })
-
-
         })
 
        async function btnReplyDelete(replyId) {
@@ -207,9 +208,6 @@
 
           $("#reply-" +replyId).replaceWith(htmls);
         }
-
-
-
       </script>
 </body>
 

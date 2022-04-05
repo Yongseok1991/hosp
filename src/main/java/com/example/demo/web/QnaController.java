@@ -124,6 +124,10 @@ public class QnaController {
         qnaService.replyDelete(replyId);
     }
 
+    @GetMapping("/ex")
+    public String ex() {
+        return "/ex";
+    }
 
 
 }

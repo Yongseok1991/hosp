@@ -23,7 +23,6 @@ let setHospital = (responsePasing) => {
 
     responsePasing.forEach((e) => {
         let trEL = document.createElement("tr");
-
         let tdEL1 = document.createElement("td");
         let tdEL2 = document.createElement("td");
         let tdEL3 = document.createElement("td");
