@@ -12,7 +12,7 @@ spring:
 
   devtools:
     livereload:
-      enablSed: true
+      enabled: true
     restart:
       enabled: true
 
