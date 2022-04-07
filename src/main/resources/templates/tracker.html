@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>택배 배송 조회</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>간단한 지도 표시하기</title>
+    <script
+            src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="/util/summernote-lite.css" rel="stylesheet">
+    <script src="/util/summernote-lite.js"></script>
+    <style>
+
+    </style>
+</head>
+
+<body>
+
+<div th:insert="/nav :: nav"></div>
+</hr>
+<div class="container">
+    <br/>
+    <h3><strong>택배 조회 서비스</strong></h3>
+    <div class="input-group">
+        <span class="input-group-text">택배회사</span>
+        <select id="express" class="form-select">
+            <option value="kr.cjlogistics">대한통운</option>
+            <option value="kr.epost">우체국택배</option>
+            <option value="kr.hanjin">한진택배</option>
+            <option value="kr.logen">로젠택배</option>
+            <option value="kr.cupost">CU 편의점택배</option>
+            <option value="kr.cvsnet">GS Postbox 택배</option>
+        </select>
+        <span class="input-group-text">운송장번호</span>
+        <input type="text" id="num" class="form-control">
+        <button id="search" class="btn btn-primary">배송조회</button>
+    </div>
+    </br>
+    <div>
+        <img src="/d987a08.png" width="100%">
+    </div>
+    <br>
+    <div>
+        <ul id="wow" class="list-group"></ul>
+    </div>
+
+    <script>
+    $(function () {
+        $('#search').on('click', () => {
+            let expressA = $('#express').val();
+            let nums = $('#num').val();
+
+            if(nums === '') {
+                alert('운송장 번호를 입력해주세요.');
+                return false;
+            }
+            fetch(`https://apis.tracker.delivery/carriers/${expressA}/tracks/${nums}`, {
+                method: "GET"
+            })
+            .then((res) => res.json())
+            .then((e) => {
+                $('#wow').html('');
+                console.log(e);
+                if(e.message != null) {
+                    console.log('invoked.');
+                    $('#wow').append(`<li class="list-group-item"><strong>${e.message}</strong></li>`)
+                    return false;
+                }
+                e.progresses.forEach((exp) => {
+                    $('#wow').append(
+                    `
+                     <li class="list-group-item" style="display: flex; justify-content: space-between;">
+                        <div>
+                            <p><strong>${exp.location.name}</strong></p>
+                            <p>${exp.time.substring(0,16).replace("T", " ")}</p>
+                        </div>
+                        <div>
+                            <p style="text-align: right"><strong>${exp.status.text}</strong></p>
+                            <p>${exp.description}</p>
+                        </div>
+                     </li>
+                    `
+                    );
+                });
+            });
+
+
+
+        })
+    })
+    </script>
+</div>
+</body>
+</html>

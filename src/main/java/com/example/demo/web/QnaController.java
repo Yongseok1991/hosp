@@ -129,5 +129,10 @@ public class QnaController {
         return "/ex";
     }
 
+    @GetMapping("/tracker")
+    public String tracker() {
+        return "/tracker";
+    }
+
 
 }

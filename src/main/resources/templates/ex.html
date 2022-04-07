@@ -25,6 +25,7 @@
         }
         .item-list {
             font-weight: bold;
+            color: #f00;
         }
         #inputbox3 {
             margin-left: 5px;
@@ -149,6 +150,7 @@
         if (selectNumber === 1) return arr.map((value) => [value]);
 
         arr.forEach((fixed, index, origin) => {
+            console.log(origin)
             const rest = origin.slice(index + 1);
             const combinations = getCombinations(rest, selectNumber - 1);
             const attached = combinations.map((combination) => [
@@ -164,6 +166,11 @@
         location.reload();
     }
 </script>
+<div class="jumbotron text-center" style="margin-bottom: 0">
+    <p>Created By Yong</p>
+    <p>📞 010-5023-2463</p>
+    <p>🏴 경기도 고양시 일산서구</p>
+</div>
 
 </body>
 

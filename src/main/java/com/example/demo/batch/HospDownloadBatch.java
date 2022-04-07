@@ -26,7 +26,7 @@ public class HospDownloadBatch {
         // DI
         private final HospitalRepository hospitalRepository;
 
-//       @Scheduled(cron = "* 5 * * * *", zone = "Asia/Seoul") // 매 분마다 배치해서 테스트 완료하고 매 시 마다로 변경하기
+//       @Scheduled(cron = "0 26 * * * *", zone = "Asia/Seoul") // 매 분마다 배치해서 테스트 완료하고 매 시 마다로 변경하기
         public void startBatch() {
                 // System.out.println("나 1분 마다 실행됨");
                 // 1. 담을 그릇 준비
