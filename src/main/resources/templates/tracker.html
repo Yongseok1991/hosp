@@ -35,6 +35,7 @@
             <option value="kr.cjlogistics">대한통운</option>
             <option value="kr.epost">우체국택배</option>
             <option value="kr.hanjin">한진택배</option>
+            <option value="kr.lotte">롯데택배</option>
             <option value="kr.logen">로젠택배</option>
             <option value="kr.cupost">CU 편의점택배</option>
             <option value="kr.cvsnet">GS Postbox 택배</option>
@@ -57,7 +58,6 @@
         $('#search').on('click', () => {
             let expressA = $('#express').val();
             let nums = $('#num').val();
-
             if(nums === '') {
                 alert('운송장 번호를 입력해주세요.');
                 return false;
@@ -70,7 +70,6 @@
                 $('#wow').html('');
                 console.log(e);
                 if(e.message != null) {
-                    console.log('invoked.');
                     $('#wow').append(`<li class="list-group-item"><strong>${e.message}</strong></li>`)
                     return false;
                 }
@@ -91,12 +90,15 @@
                     );
                 });
             });
-
-
-
         })
     })
     </script>
+</div>
+<br>
+<div class="jumbotron text-center" style="margin-bottom: 0">
+    <p>Created By Yong</p>
+    <p>📞 010-5023-2463</p>
+    <p>🏴 경기도 고양시 일산서구</p>
 </div>
 </body>
 </html>
