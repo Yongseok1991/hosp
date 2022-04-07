@@ -17,13 +17,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <link href="/util/summernote-lite.css" rel="stylesheet">
     <script src="/util/summernote-lite.js"></script>
-    <style>
-
-    </style>
 </head>
-
 <body>
-
 <div th:insert="/nav :: nav"></div>
 </hr>
 <div class="container">
@@ -40,8 +35,8 @@
             <option value="kr.cupost">CU 편의점택배</option>
             <option value="kr.cvsnet">GS Postbox 택배</option>
         </select>
-        <span class="input-group-text">운송장번호</span>
-        <input type="text" id="num" class="form-control">
+        <span class="input-group-text" >운송장번호</span>
+        <input type="text" id="num" placeholder="운송장 번호를 입력해주세요." class="form-control">
         <button id="search" class="btn btn-primary">배송조회</button>
     </div>
     </br>
@@ -58,17 +53,27 @@
         $('#search').on('click', () => {
             let expressA = $('#express').val();
             let nums = $('#num').val();
+
+            let check = /^[0-9]+$/;
+            if (!check.test(nums)) {
+                alert("숫자만 입력 가능합니다.");
+                $('#num').val('');
+                $('#num').focus();
+                return false;
+            }
             if(nums === '') {
                 alert('운송장 번호를 입력해주세요.');
                 return false;
             }
             fetch(`https://apis.tracker.delivery/carriers/${expressA}/tracks/${nums}`, {
-                method: "GET"
+                method: "GET",
+                headers: {
+                    'Accept': 'application/json'
+                }
             })
             .then((res) => res.json())
             .then((e) => {
                 $('#wow').html('');
-                console.log(e);
                 if(e.message != null) {
                     $('#wow').append(`<li class="list-group-item"><strong>${e.message}</strong></li>`)
                     return false;
@@ -89,16 +94,13 @@
                     `
                     );
                 });
-            });
+            })
+            .catch((err) => console.log("err: ", err))
         })
     })
     </script>
 </div>
-<br>
-<div class="jumbotron text-center" style="margin-bottom: 0">
-    <p>Created By Yong</p>
-    <p>📞 010-5023-2463</p>
-    <p>🏴 경기도 고양시 일산서구</p>
-</div>
+
+<div th:insert="/footer :: div"></div>
 </body>
 </html>

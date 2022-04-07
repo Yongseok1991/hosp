@@ -75,12 +75,6 @@
       </div>
     </div>
   </div>
-
-  <div class="jumbotron text-center" style="margin-bottom: 0">
-    <p>Created By Yong</p>
-    <p>📞 010-5023-2463</p>
-    <p>🏴 경기도 고양시 일산서구</p>
-  </div>
       <script>
         $(function () {
           $("#btn-reply-save").on("click", () => {
@@ -187,6 +181,7 @@
           $("#reply-" +replyId).replaceWith(htmls);
         }
       </script>
+<div th:insert="/footer :: div"></div>
 </body>
 
 </html>
