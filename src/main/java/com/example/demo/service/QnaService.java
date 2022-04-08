@@ -17,6 +17,7 @@ public class QnaService {
 
     private final QnaRepository qnaRepository;
     private final ReplyRepository replyRepository;
+
     @Transactional(readOnly = true)
     public Page<Qna> QnaList(Pageable pageable) {
         return qnaRepository.findAll(pageable);

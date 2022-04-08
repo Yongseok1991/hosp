@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.example.demo.domain.Hospital;
 import com.example.demo.domain.HospitalRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Controller
+@Slf4j
 public class HospitalController {
     private static final String TAG = "HospitalController : ";
     private final HospitalRepository hRepository;
@@ -33,10 +35,9 @@ public class HospitalController {
     // http://localhost:8000/api/hospital?sidoCdNm=머시기&sgguCdNm=머시기
     @GetMapping("/api/hospital")
     public @ResponseBody List<Hospital> hospitals(String sidoCdNm, String sgguCdNm) {
-        System.out.println(TAG + hRepository.mFindSidoCdNm().size());
+        log.info(TAG + hRepository.mFindSidoCdNm().size());
         return hRepository.mFindHospital(sidoCdNm, sgguCdNm);
     }
-
 
     @GetMapping("/api/sggucdnm")
     // 응답도 json으로 할 예정
