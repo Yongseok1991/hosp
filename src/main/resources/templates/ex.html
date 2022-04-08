@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>키워드 조합</title>
+    <title>조추첨</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport"
@@ -31,6 +31,12 @@
         #inputbox3 {
             margin-left: 5px;
         }
+        #inputbox4 {
+            margin-left: 5px;
+        }
+        #inputbox5 {
+            margin-left: 5px;
+        }
     </style>
 </head>
 
@@ -38,8 +44,9 @@
 
 <div th:insert="/nav :: nav"></div>
 
-<div class="container" style="margin-top: 20px">
-    <h3 style="display: inline"><strong>키워드 조합하기</strong></h3>
+<div class="container" style="margin-top: 20px;">
+    <h3 style="display: inline;"><strong>조추첨</strong></h3>
+
     <button
             style="float: right"
             class="btn btn-success"
@@ -47,10 +54,23 @@
     >
         리셋
     </button>
+    <div class="input-group" style="width: 100px; float: right; margin-right: 10px">
+        <span class="input-group-text">수</span>
+        <select class="form-select" id="countNum">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4" selected>4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+        </select>
+        </div>
     <hr />
     <p>√ 한 줄에 하나의 키워드를 입력해주세요.</p>
     <p>√ 하나의 textarea는 10개까지 입력 가능합니다. 10개를 초과할 경우 textarea를 추가해주세요.</p>
-    <p>√ textarea는 총 3개까지 가능합니다.</p>
+    <p>√ textarea는 총 5개까지 가능합니다.</p>
     <p>√ 키워드는 4개 이상 입력해주세요. (중복된 키워드는 자동제거)</p>
 
     <div id="inputBlock">
@@ -67,7 +87,7 @@
             <tr>
                 <td>
                     <p id="textLength" style="display: inline; font-weight: bold">
-                        키워드
+                        조추첨 결과
                     </p>
                     <button
                             style="float: right"
@@ -92,7 +112,7 @@
     $(function () {
         let sId = 1;
         $(document).on("click", "#areaAdd", () => {
-            if (sId === 3) {
+            if (sId === 5) {
                 alert("더이상 추가 하실 수 없습니다.");
                 return false;
             }
@@ -129,38 +149,62 @@
             });
         });
 
+        // 중복제거
         let strDup = str.filter((val, idx) => {
             return str.indexOf(val) === idx;
         });
+
         if (strDup.length < 4) {
             alert("키워드를 4개 이상 입력해주세요. (중복된 키워드 자동 제거)");
             return false;
         }
-        let combi = getCombinations(strDup, 3);
+        // 랜덤 섞기
+        shuffle(strDup);
+
+        // n개씩 분할 n개 이하일 경우 나머지로 구성
+        let countNum = $('#countNum').val();
+        let combi = division(strDup, countNum);
+        console.log(combi);
         $.each(combi, (i, com) => {
             $("#key").append(
                 `<li class='item-list'>${com.toString().replaceAll(",", " ")}</li>`
             );
         });
-        let keywordLength = $(".item-list").length;
-        $("#textLength").text(`키워드 (${keywordLength} 개)`);
+
+    }
+    // 순열조합
+    // function getCombinations(arr, selectNumber) {
+    //     const results = [];
+    //     if (selectNumber === 1) return arr.map((value) => [value]);
+    //
+    //     arr.forEach((fixed, index, origin) => {
+    //         const rest = origin.slice(index + 1);
+    //         const combinations = getCombinations(rest, selectNumber - 1);
+    //         const attached = combinations.map((combination) => [
+    //             fixed,
+    //             ...combination,
+    //         ]);
+    //         results.push(...attached);
+    //     });
+    //     return results;
+    // }
+
+
+    const division = (arr, numbers) => {
+        const length = arr.length;
+        const divide = Math.floor(length / numbers) + (Math.floor(length % numbers) > 0 ? 1 : 0);
+        const newArray = [];
+        for(let i=0; i < divide; i++) {
+            newArray.push(arr.splice(0, numbers));
+        }
+        return newArray;
     }
 
-    function getCombinations(arr, selectNumber) {
-        const results = [];
-        if (selectNumber === 1) return arr.map((value) => [value]);
-
-        arr.forEach((fixed, index, origin) => {
-            console.log(origin)
-            const rest = origin.slice(index + 1);
-            const combinations = getCombinations(rest, selectNumber - 1);
-            const attached = combinations.map((combination) => [
-                fixed,
-                ...combination,
-            ]);
-            results.push(...attached);
-        });
-        return results;
+    function shuffle(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
     }
 
     function resetFunction() {
