@@ -87,7 +87,7 @@
                         style="float: right"
                         id="keyWordBtn"
                         class="btn btn-primary"
-                        onclick="keywordCombination();"
+                        onclick="keywordSpilt();"
                 >
                     키워드 조합
                 </button>
@@ -103,16 +103,19 @@
     $(function () {
         let sId = 1;
         $(document).on("click", "#areaAdd", () => {
+            // textarea 최대 5개
             if (sId === 5) {
                 alert("더이상 추가 하실 수 없습니다.");
                 return false;
             }
+
             $("#inputBlock").append(
                 `<textarea class="inputbox" id='inputbox${++sId}' cols='30' rows='10'></textarea>`
             );
         });
 
         $(document).on("click", "#areaDelete", () => {
+            // textarea 최소 1개
             if (sId === 1) {
                 alert("더이상 제거 하실 수 없습니다.");
                 return false;
@@ -122,25 +125,27 @@
         });
     });
 
-    function keywordCombination() {
+    function keywordSpilt() {
         $("#key").html("");
         let str = [];
         let inputbox = $(".inputbox");
+        // textarea에 아무값도 입력하지 않았을 경우 validation
         if (inputbox.val().length == 0) {
             alert("키워드를 입력해주세요.");
             return false;
         }
-
+        // textarea의 한줄씩 가져와서 배열에 넣기
         $.each(inputbox, (i, item) => {
             let items = $(item).val().split("\n");
             $.each(items, (i, result) => {
+                // 공백이 아니라면
                 if (result != "") {
                     str.push(result);
                 }
             });
         });
 
-        // 중복제거
+        // 배열 중복제거
         let strDup = str.filter((val, idx) => {
             return str.indexOf(val) === idx;
         });
@@ -149,17 +154,98 @@
             alert("키워드를 4개 이상 입력해주세요. (중복된 키워드 자동 제거)");
             return false;
         }
-        // 랜덤 섞기
+        // 배열 랜덤 섞기
         shuffle(strDup);
 
-        // n개씩 분할 n개 이하일 경우 나머지로 구성
         let countNum = $('#countNum').val();
+        // n개씩 분할 n개 이하일 경우 나머지로 구성
         let combi = division(strDup, countNum);
         console.log(combi);
         $.each(combi, (i, com) => {
-            $("#key").append(
+            // index를 알파벳으로 변경
+            switch (i) {
+                case 0:
+                    i = 'A';
+                    break;
+                case 1:
+                    i = 'B';
+                    break;
+                case 2:
+                    i = 'C';
+                    break;
+                case 3:
+                    i = 'D';
+                    break;
+                case 4:
+                    i = 'E';
+                    break;
+                case 5:
+                    i = 'F';
+                    break;
+                case 6:
+                    i ='G';
+                    break;
+                case 7:
+                    i = 'H';
+                    break;
+                case 8:
+                    i ='I';
+                    break
+                case 9:
+                    i = 'J';
+                    break;
+                case 10:
+                    i = 'K';
+                    break;
+                case 11:
+                    i = 'L';
+                    break;
+                case 12:
+                    i = 'M';
+                    break;
+                case 13:
+                    i = 'N';
+                    break;
+                case 14:
+                    i = 'O';
+                    break;
+                case 15:
+                    i = 'P';
+                    break;
+                case 16:
+                    i = 'Q';
+                    break;
+                case 17:
+                    i = 'R';
+                    break;
+                case 18:
+                    i = 'S';
+                    break;
+                case 19:
+                    i = 'T';
+                    break;
+                case 20:
+                    i = 'U';
+                    break;
+                case 21:
+                    i = 'V';
+                    break;
+                case 22:
+                    i = 'W';
+                    break;
+                case 23:
+                    i = 'X';
+                    break;
+                case 24:
+                    i = 'Y';
+                    break;
+                case 25:
+                    i = 'Z';
+                    break;
+            }
 
-                `<li class='list-group-item'>${i+1}조:  ${com.toString().replaceAll(",", " ")}</li>`
+            $("#key").append(
+                `<li class='list-group-item'>${i}조:  ${com.toString().replaceAll(",", " ")}</li>`
             );
         });
 
@@ -181,7 +267,7 @@
     //     return results;
     // }
 
-
+    // n개씩 나누기
     const division = (arr, numbers) => {
         const length = arr.length;
         const divide = Math.floor(length / numbers) + (Math.floor(length % numbers) > 0 ? 1 : 0);
@@ -192,13 +278,14 @@
         return newArray;
     }
 
+    // 배열 섞기
     function shuffle(arr) {
         for (let i = arr.length - 1; i > 0; i--) {
             let j = Math.floor(Math.random() * (i + 1));
             [arr[i], arr[j]] = [arr[j], arr[i]];
         }
     }
-
+    // 리셋하기
     function resetFunction() {
         location.reload();
     }
