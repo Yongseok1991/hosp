@@ -54,8 +54,8 @@
     >
         리셋
     </button>
-    <div class="input-group" style="width: 100px; float: right; margin-right: 10px">
-        <span class="input-group-text">수</span>
+    <div class="input-group" style="width: 120px; float: right; margin-right: 15px">
+        <span class="input-group-text">그룹</span>
         <select class="form-select" id="countNum">
             <option value="1">1</option>
             <option value="2">2</option>
@@ -246,7 +246,7 @@
             }
 
             $("#key").append(
-                `<li class='list-group-item'>${i}조:  ${com.toString().replaceAll(",", " ")}</li>`
+                `<li class='list-group-item'><p>${i}조</p>${com.toString().replaceAll(",", " ")}</li>`
             );
         });
 
