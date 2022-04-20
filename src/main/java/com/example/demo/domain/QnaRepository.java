@@ -4,6 +4,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+import java.util.Map;
+
 
 public interface QnaRepository extends JpaRepository<Qna, Integer> {
 
@@ -12,6 +15,10 @@ public interface QnaRepository extends JpaRepository<Qna, Integer> {
     public int mUpdateQna(String content, String title, int id);
 
 
+    @Query(value="UPDATE Qna a SET a.count = a.count +1 WHERE id = ?1", nativeQuery = true)
+    @Modifying
+    public int qnaCount(Integer id);
 
-
+    @Query(value="SELECT Q.id id, (SELECT count(*) FROM reply WHERE qnaId = Q.id) slength FROM qna Q", nativeQuery = true)
+    public List<Map<String, Object>> replyCount();
 }

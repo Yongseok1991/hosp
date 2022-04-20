@@ -9,6 +9,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Map;
+
 
 @RequiredArgsConstructor
 @Service
@@ -23,8 +26,10 @@ public class QnaService {
         return qnaRepository.findAll(pageable);
     }
 
+
     @Transactional
     public void qnaWrite(Qna qna) {
+        qna.setCount(0);
         qnaRepository.save(qna);
     }
     @Transactional(readOnly = false)
@@ -68,4 +73,14 @@ public class QnaService {
     }
 
 
+    @Transactional
+    public int boardCount(Integer id) {
+       return qnaRepository.qnaCount(id);
+    }
+
+
+    @Transactional
+    public List<Map<String, Object>> replyCount() {
+        return qnaRepository.replyCount();
+    }
 }

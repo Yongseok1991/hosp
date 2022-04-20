@@ -15,10 +15,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -41,6 +45,12 @@ public class QnaController {
         Page<Qna> list = qnaService.QnaList(pageable);
        return list;
     }
+    @ResponseBody
+    @GetMapping("/api/count")
+    public List<Map<String, Object>> replyCount() {
+        return qnaService.replyCount();
+    }
+
     @GetMapping("/save")
     public String save(Qna qna) {
         return "save";
@@ -53,7 +63,10 @@ public class QnaController {
     }
 
     @GetMapping("/qna/{id}")
-    public String detail(Model model, @PathVariable Integer id) {
+    public String detail(Model model, @PathVariable Integer id, HttpServletResponse res, HttpServletRequest req) {
+        this.getCookie(req, res, id);
+        String nlString = System.getProperty("line.separator").toString();
+        model.addAttribute("newLineChar", '\n');
         model.addAttribute("board", qnaService.boardDetail(id));
         return "detail";
     }
@@ -132,6 +145,29 @@ public class QnaController {
     @GetMapping("/tracker")
     public String tracker() {
         return "/tracker";
+    }
+
+
+    public void getCookie(HttpServletRequest req, HttpServletResponse res, Integer id) {
+        Cookie[] cookies = req.getCookies();
+        boolean isGet = false;
+
+        if(cookies != null) {
+            for(Cookie cookie : cookies) {
+                if(cookie.getName().equals(String.valueOf(id))) {
+                    isGet = true;
+                }
+            }
+        }
+        if(!isGet) {
+            qnaService.boardCount(id);
+            Cookie newCookie = new Cookie(String.valueOf(id),"["+id+"]" );
+            newCookie.setMaxAge(10 * 60);
+            res.addCookie(newCookie);
+        }
+
+
+
     }
 
 

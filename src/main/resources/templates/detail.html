@@ -26,7 +26,7 @@
   <div class="container">
     <br />
     <h3><strong>Q&A</strong></h3>
-    <p>사이트 이용 불편사항이나 질문사항을 올려주세요</p>
+    <p>사이트 이용 불편사항이나 질문사항을 올려주세요2</p>
     <div class="container" style="margin-top: 3rem;">
       <div class="btn-group">
         <button class="btn btn-secondary" style="font-size: 1.0rem;" onclick="history.back()">돌아가기</button>
@@ -62,11 +62,11 @@
         <ul id="reply-box" class="list-group">
           <th:block th:each="reply: ${board.reply}">
             <li th:id="|reply-${reply.id}|" class="list-group-item d-flex justify-content-between">
-              <div th:text="${reply.content}"></div>
+              <div th:utext="${#strings.replace(reply.content, newLineChar, '&lt;br/&gt;')}"></div>
               <div class="d-flex">
                 <div class="font-italic"><h6 style="padding-top: 5px; padding-left: 10px; padding-right: 10px;"th:text="|작성자: ${reply.writer} |"></h6> </div>
-                  <button th:onclick="|updateViewBtn(${reply.id})|" id="btn-reply-update" class="badge" style="color: black;">수정</button>
-                  <button th:onclick="|btnReplyDelete(${reply.id})|" class="badge" style="color: black;">삭제</button>
+                  <button th:data-param1="${reply.content}" th:onclick="|updateViewBtn(${reply.id}, this.getAttribute('data-param1'))|" id="btn-reply-update" class="badge" style="color: black; height: 30px;">수정</button>
+                  <button th:onclick="|btnReplyDelete(${reply.id})|" class="badge" style="color: black; height: 30px;">삭제</button>
                 <div><h6 style="padding-top: 5px; padding-left: 10px;" th:text="${#temporals.format(reply.createDate, 'yyyy-MM-dd HH:mm')}"></h6></div>
               </div>
             </li>
@@ -166,13 +166,14 @@
         }
 
 
-        function updateViewBtn(replyId) {
+        function updateViewBtn(replyId, content) {
+          console.log("Content", content);
           var htmls =
             "<form>"+
                "<div id='reply-"+replyId+"' class='list-group-item d-flex justify-content-between'>" +
                  "<input type='hidden' id='replyId' value='"+replyId+"'>"+
                  "<div class='card-body'>"+
-                    "<textarea id='reply-editContent' class='form-control' rows='1' cols=''></textarea>"+
+                    "<textarea id='reply-editContent' class='form-control' rows='8' cols=''>"+content+"</textarea>"+
                     "<button type='button' id='btn-reply-success' class='badge' style='color: black'>완료</button>"+
                  "</div>"+
                "</div>"+

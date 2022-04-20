@@ -5,11 +5,23 @@ $(function() {
 let getQna = async (page) => {
     let response = await fetch(`/api/qna?page=${page}`);
     let responsePasing = await response.json();
+    let responseCount = await fetch("/api/count");
+    let responseCountPas = await responseCount.json();
+    console.log("resff: ", responseCountPas)
+
+    responsePasing.content.forEach((e) => {
+        responseCountPas.forEach((t) => {
+            if(t.ID === e.id) {
+                e['sLength'] = t.SLENGTH;
+            }
+        })
+    })
+    console.log("con:" , responsePasing)
+
     setQna(responsePasing);
 }
 
 let setQna = (responsePasing) => {
-    console.log(responsePasing);
 
     let tbodyDom = document.querySelector("#qnaDom");
     tbodyDom.innerHTML = '';
@@ -21,14 +33,16 @@ let setQna = (responsePasing) => {
         let tdEL2 = document.createElement("td");
         let tdEL3 = document.createElement("td");
         let tdEL4 = document.createElement("td");
-
+        let span = document.createElement("span");
         tdEL1.innerHTML = e.id;
         tdEL2.innerHTML = e.title;
         tdEL3.innerHTML = e.writer == null ? '용돌' : e.writer;
         tdEL4.innerHTML = e.createDate.substring(0, 16).replace('T', ' ')
         tdEL2.onclick = () => location.href=`/qna/${e.id}`;
-
+        span.innerHTML = ` (${e.sLength})`;
         tdEL2.style.cursor= "pointer"
+        span.style.color ="red";
+        tdEL2.append(span);
 
         trEL.append(tdEL1);
         trEL.append(tdEL2);
